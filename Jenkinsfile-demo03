@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    // environment variables
+    environment {
+        PATH = "/var/jenkins_home/local/mvn363/bin/mvn:$PATH"
+    }
+    stages {
+        stage ('Git checkout') {
+            steps {
+                echo 'no needed to checkout'
+                echo 'it already checked out'
+                // git 'https://github.com/bc0071/myweb'
+            }
+        }
+        stage ('Maven build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+    }
+}
