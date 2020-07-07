@@ -1,12 +1,12 @@
 pipeline {
     agent any
     stages {
-/*
       stage('Git Checkout') {
             steps {
-                git 'https://github.com/bc0071/myweb'
+                echo 'No needed to checkout'
+                echo 'Remove/comment git'
+                // git 'https://github.com/bc0071/myweb'
             }
         }
-*/
     }
 }
