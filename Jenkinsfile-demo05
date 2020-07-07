@@ -1,0 +1,42 @@
+currentBuild.displayName = "online-shopping-#"+currentBuild.number
+
+pipeline {
+  agent any
+  // environment variables
+  environment {
+      PATH = "/var/jenkins_home/local/mvn363/bin:$PATH"
+  }
+  stages {
+    stage ('Git checkout') {
+      steps {
+          echo 'no needed to checkout'
+          echo 'it already checked out'
+          // git 'https://github.com/bc0071/myweb'
+      }
+    }
+    stage ('Maven build') {
+      steps {
+          sh 'mvn clean package'
+          // rename package name as simple without version
+          sh 'mv target/*.war target/myweb.war'
+      }
+    }
+    stage ('deploy-dev') {
+      steps {
+        sshagent(['tomcat8-demo04']) {
+          // some block
+          // sh 'ssh -o StrictHostKeyChecking=no -l cloudbees 192.168.1.106 uname -a'
+          // """ multiple lines of scripted shell
+
+          sh """
+            scp -o StrictHostKeyChecking=no target/myweb.war vagrant@<ipaddr/hostname>:/opt/tomcat8/webapps/
+            // restart tomcat
+            ssh vagrant@<host> /opt/tomcat8/bin/shutdown.sh
+            ssh vagrant@<host> /opt/tomcat8/bin/startup.sh
+          """
+          
+        }
+      }
+    }
+  }  
+}
