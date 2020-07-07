@@ -2,7 +2,7 @@ pipeline {
     agent any
     // environment variables
     environment {
-        PATH = "/var/jenkins_home/local/mvn363/bin/mvn:$PATH"
+        PATH = "/var/jenkins_home/local/mvn363/bin:$PATH"
     }
     stages {
         stage ('Git checkout') {
