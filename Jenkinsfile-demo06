@@ -1,0 +1,23 @@
+pipeline {
+  agent any     // could be any such as master or slave. currently no slave, so it would be master
+  
+  environment {     // It is global, but it can be inside stage and make it local.
+    DOCKER_TAG = getDockerTag()
+  }
+  stages {
+    stage ('Build Docker Image') {
+      steps {
+        // sh 'docker build -t bc0071/nodeapp:v1'
+        // sh "docker build -t bc0071/nodeapp:${DOCKER_TAG} ." // . at the end of code, failed. Check!
+        sh "docker build . -t bc0071/nodeapp:${DOCKER_TAG}"
+      }
+    }
+  }
+}
+
+// make TAG dynamic
+def getDockerTag() {
+  //def tag = sh script: 'git rev-parse HEAD' // get latest commit ID
+  def tag = sh script: 'git rev-parse HEAD', returnStdout: true
+  return tag
+}
